@@ -20,11 +20,14 @@ else:
         print("Increment should be a positive integer.")
         exit()
 
-    # Generate a timestamp
-    timestamp = datetime.now().strftime("%d%b%Y.%H%M%S")
+    # Generate a timestamp in the format "20231026 113730"
+    timestamp = datetime.now().strftime("%Y%m%d %H%M%S")
 
-    # Create the destination subdirectory
-    destination_directory = os.path.join(source_directory, timestamp)
+    # Get the base directory name from the source directory
+    base_directory_name = os.path.basename(os.path.normpath(source_directory))
+
+    # Create the destination subdirectory with original directory name and timestamp
+    destination_directory = os.path.join(source_directory, f"{base_directory_name} {timestamp}")
     os.makedirs(destination_directory, exist_ok=True)
 
     # Get a list of all files in the source directory
