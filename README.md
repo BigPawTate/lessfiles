@@ -10,7 +10,6 @@ Before using this script, ensure you have the following dependencies installed:
 - The `exifread` library for reading EXIF data. You can install it using pip:  ```pip install exifread```
 
 
-
 ## Usage
 
 1. Run the script by executing it using a Python 3 interpreter.
@@ -19,15 +18,16 @@ Before using this script, ensure you have the following dependencies installed:
 
 3. You will also be asked to specify an increment. For example, you can enter `1` to copy every file or `2` to copy every other file.
 
-4. The script will create a subdirectory in the specified directory with a timestamp (format: YYYYMMDD HHMMSS), where copied files will be stored.
+4. You can optionally provide an output directory. If you do not provide one, the script will create a subdirectory in the source directory with a timestamp (format: YYYYMMDD HHMMSS), where copied files will be stored.
 
-5. The script will iterate through the picture files in the source directory, extract the timestamp from their EXIF data, and append it to the filename.
+5. If you provide an output directory, the renamed files will be placed directly in that directory. If you do not provide one, the default timestamp directory will be created as before.
 
-6. Only the files selected based on the increment will be copied to the subdirectory with the modified names.
+6. The script will iterate through the picture files in the source directory, extract the timestamp from their EXIF data, and append it to the filename.
 
-7. The script will display the total number of files that were copied to the subdirectory.
+7. Only the files selected based on the increment will be copied to the subdirectory with the modified names.
+
+8. The script will display the total number of files that were copied to the subdirectory.
 
 ## Example
 
-Suppose you have a directory with picture files, and you run the script with an increment of `2`. The script will copy every other picture file and append the timestamp from their EXIF data to the filenames. The copied files will be stored in a subdirectory with a timestamp, and the script will inform you of how many files were copied.
-
+Suppose you have a directory with picture files, and you run the script with an increment of `2`. The script will copy every other picture file and append the timestamp from their EXIF data to the filenames. If you provide an output directory, the renamed files will be placed directly in that directory.
