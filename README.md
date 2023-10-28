@@ -1,3 +1,11 @@
+#  Too Many Files! 
+- Make some more!
+- doing photogrammetry and sometimes I have more images than the application can handle
+- using this script to pare down the number of files and update the filenames to include the image's timestamp to avoid naming conflicts when combining multiple sessions
+  
+
+
+
 # Photo File Renaming and Copying Script
 
 This Python script is designed to rename and copy picture files based on their EXIF data. It extracts the timestamp from the EXIF data and appends it to the original filename, while retaining the file extension. The script also allows you to specify an increment to choose which files to copy.
