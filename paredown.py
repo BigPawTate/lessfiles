@@ -12,6 +12,13 @@ def get_timestamp_from_exif(file_path):
         else:
             return None
 
+# Function to check if a filename already contains a timestamp
+def has_existing_timestamp(filename):
+    # Define a regular expression pattern for a timestamp (YYYYMMDD HHMMSS)
+    import re
+    timestamp_pattern = r'\d{8} \d{6}'
+    return re.search(timestamp_pattern, filename) is not None
+
 # Prompt the user for the directory path where picture files are located
 source_directory = input("Enter the directory path where your picture files are located: ")
 
@@ -24,7 +31,7 @@ if not os.path.isdir(source_directory):
 increment = int(input("Enter the increment (e.g., 1 for every file, 2 for every other file): "))
 
 # Prompt the user for the output directory or press Enter to use the default
-output_directory = input("Enter the output directory path (or press Enter): ")
+output_directory = input("Enter the output directory path (or press Enter to use default timestamp directory): ")
 
 # Create a subdirectory with the current timestamp (with space between day and hour)
 timestamp = datetime.now().strftime('%Y%m%d %H%M%S')
@@ -63,9 +70,13 @@ for filename in os.listdir(source_directory):
 
             # Check if the current file should be copied based on the increment
             if counter % increment == 0:
-                # Construct the new filename with a space between the day and hour
-                new_filename = f"{os.path.splitext(filename)[0]} {formatted_timestamp}{file_extension}"
-                
+                # Check if the filename already contains a timestamp
+                if has_existing_timestamp(filename):
+                    new_filename = filename  # Use the original filename
+                else:
+                    # Construct the new filename with a space between the day and hour
+                    new_filename = f"{os.path.splitext(filename)[0]} {formatted_timestamp}{file_extension}"
+
                 # Copy the file to the subdirectory and rename it
                 new_file_path = os.path.join(subdirectory, new_filename)
                 shutil.copy(file_path, new_file_path)
@@ -78,6 +89,6 @@ for filename in os.listdir(source_directory):
             print(f"No EXIF data found for '{filename}'")
 
 if not output_directory:
-    print(f"{copied_files_count} files copied to: {subdirectory}")
+    print(f"{copied_files_count} copied files to: {subdirectory}")
 else:
-    print(f"{copied_files_count} files copied to: {output_directory}")
+    print(f"{copied_files_count} copied files to: {output_directory}")
