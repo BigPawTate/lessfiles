@@ -36,6 +36,12 @@ Before using this script, ensure you have the following dependencies installed:
 
 8. The script will display the total number of files that were copied to the subdirectory.
 
+
 ## Example
 
 Suppose you have a directory with picture files, and you run the script with an increment of `2`. The script will copy every other picture file and append the timestamp from their EXIF data to the filenames. If you provide an output directory, the renamed files will be placed directly in that directory.
+
+
+# here's what it looks like:  
+![demo](https://github.com/BigPawTate/lessfiles/assets/116862308/72ef37df-cc4e-4d6e-bc53-7df3cb6d2dd0)
+
