@@ -68,4 +68,4 @@ for filename in os.listdir(source_directory):
         else:
             print(f"No EXIF data found for '{filename}'")
 
-print(f"Copied {copied_files_count} files to subdirectory: {timestamp}")
+print(f"Copied {copied_files_count} files to subdirectory: {subdirectory}")
