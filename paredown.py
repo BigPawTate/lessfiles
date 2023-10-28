@@ -86,7 +86,7 @@ for filename in os.listdir(source_directory):
                 new_file_path = os.path.join(subdirectory, new_filename)
                 shutil.copy(file_path, new_file_path)
 
-                print(f"Copied '{filename}' to '{new_filename}'")
+                print(f" Copied '{filename}' to '{new_filename}'")
                 copied_files_count += 1
 
             counter += 1
