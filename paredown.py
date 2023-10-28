@@ -78,6 +78,6 @@ for filename in os.listdir(source_directory):
             print(f"No EXIF data found for '{filename}'")
 
 if not output_directory:
-    print(f"Copied {copied_files_count} files to default subdirectory: {subdirectory}")
+    print(f"{copied_files_count} files copied to: {subdirectory}")
 else:
-    print(f"Copied {copied_files_count} files to user-specified directory: {output_directory}")
+    print(f"{copied_files_count} files copied to: {output_directory}")
