@@ -12,7 +12,7 @@ def get_timestamp_from_exif(file_path):
         else:
             return None
 
-# Prompt the user for the directory path
+# Prompt the user for the directory path where picture files are located
 source_directory = input("Enter the directory path where your picture files are located: ")
 
 # Check if the provided path is a valid directory
@@ -23,12 +23,21 @@ if not os.path.isdir(source_directory):
 # Prompt the user for the increment of files they want to keep
 increment = int(input("Enter the increment (e.g., 1 for every file, 2 for every other file): "))
 
+# Prompt the user for the output directory or press Enter to use the default
+output_directory = input("Enter the output directory path (or press Enter): ")
+
 # Create a subdirectory with the current timestamp (with space between day and hour)
 timestamp = datetime.now().strftime('%Y%m%d %H%M%S')
-subdirectory = os.path.join(source_directory, timestamp)
 
-if not os.path.exists(subdirectory):
-    os.mkdir(subdirectory)
+if not output_directory:
+    # Use the default subdirectory
+    subdirectory = os.path.join(source_directory, timestamp)
+    if not os.path.exists(subdirectory):
+        os.mkdir(subdirectory)
+else:
+    if not os.path.exists(output_directory):
+        os.mkdir(output_directory)
+    subdirectory = output_directory
 
 # Initialize a counter to keep track of the increment
 counter = 0
@@ -68,4 +77,7 @@ for filename in os.listdir(source_directory):
         else:
             print(f"No EXIF data found for '{filename}'")
 
-print(f"Copied {copied_files_count} files to subdirectory: {subdirectory}")
+if not output_directory:
+    print(f"Copied {copied_files_count} files to default subdirectory: {subdirectory}")
+else:
+    print(f"Copied {copied_files_count} files to user-specified directory: {output_directory}")
