@@ -1,45 +1,71 @@
 import os
+import exifread
 import shutil
 from datetime import datetime
 
-# Prompt the user for the source directory
-source_directory = input("Enter the source directory path: ")
+# Function to get the timestamp from EXIF data
+def get_timestamp_from_exif(file_path):
+    with open(file_path, 'rb') as f:
+        tags = exifread.process_file(f, details=False)
+        if 'EXIF DateTimeOriginal' in tags:
+            return tags['EXIF DateTimeOriginal'].printable
+        else:
+            return None
 
-# Check if the entered directory exists
-if not os.path.exists(source_directory) or not os.path.isdir(source_directory):
-    print("The specified directory does not exist.")
-else:
-    # Prompt the user for the increment
-    try:
-        increment = int(input("Enter the increment (e.g., 1 for every file, 2 for every other file): "))
-    except ValueError:
-        print("Invalid increment. Please enter a positive integer.")
-        exit()
+# Prompt the user for the directory path
+source_directory = input("Enter the directory path where your picture files are located: ")
 
-    if increment <= 0:
-        print("Increment should be a positive integer.")
-        exit()
+# Check if the provided path is a valid directory
+if not os.path.isdir(source_directory):
+    print("Invalid directory path. Please provide a valid directory path.")
+    exit()
 
-    # Generate a timestamp in the format "20231026 113730"
-    timestamp = datetime.now().strftime("%Y%m%d %H%M%S")
+# Prompt the user for the increment of files they want to keep
+increment = int(input("Enter the increment (e.g., 1 for every file, 2 for every other file): "))
 
-    # Get the base directory name from the source directory
-    base_directory_name = os.path.basename(os.path.normpath(source_directory))
+# Create a subdirectory with the current timestamp (with space between day and hour)
+timestamp = datetime.now().strftime('%Y%m%d %H%M%S')
+subdirectory = os.path.join(source_directory, timestamp)
 
-    # Create the destination subdirectory with original directory name and timestamp
-    destination_directory = os.path.join(source_directory, f"{base_directory_name} {timestamp}")
-    os.makedirs(destination_directory, exist_ok=True)
+if not os.path.exists(subdirectory):
+    os.mkdir(subdirectory)
 
-    # Get a list of all files in the source directory
-    files = [f for f in os.listdir(source_directory) if os.path.isfile(os.path.join(source_directory, f))]
+# Initialize a counter to keep track of the increment
+counter = 0
 
-    # Create a list of files to copy based on the specified increment
-    files_to_copy = files[::increment]
+# Initialize a counter to keep track of copied files
+copied_files_count = 0
 
-    # Copy the selected files to the destination subdirectory
-    for file_name in files_to_copy:
-        source_path = os.path.join(source_directory, file_name)
-        destination_path = os.path.join(destination_directory, file_name)
-        shutil.copy2(source_path, destination_path)
+# Iterate through the files in the directory
+for filename in os.listdir(source_directory):
+    if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+        file_path = os.path.join(source_directory, filename)
 
-    print(f"Copied {len(files_to_copy)} files with an increment of {increment} to {destination_directory}")
+        # Get the timestamp from EXIF data
+        timestamp = get_timestamp_from_exif(file_path)
+
+        if timestamp:
+            # Format the timestamp with a space between the day and hour
+            formatted_timestamp = timestamp.replace(' ', '').replace(':', '').replace('-', '')
+            formatted_timestamp = formatted_timestamp[:8] + ' ' + formatted_timestamp[8:]
+
+            # Get the file extension
+            _, file_extension = os.path.splitext(filename)
+
+            # Check if the current file should be copied based on the increment
+            if counter % increment == 0:
+                # Construct the new filename with a space between the day and hour
+                new_filename = f"{os.path.splitext(filename)[0]} {formatted_timestamp}{file_extension}"
+                
+                # Copy the file to the subdirectory and rename it
+                new_file_path = os.path.join(subdirectory, new_filename)
+                shutil.copy(file_path, new_file_path)
+
+                print(f"Copied '{filename}' to '{new_filename}'")
+                copied_files_count += 1
+
+            counter += 1
+        else:
+            print(f"No EXIF data found for '{filename}'")
+
+print(f"Copied {copied_files_count} files to subdirectory: {timestamp}")
