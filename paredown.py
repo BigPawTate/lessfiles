@@ -20,11 +20,11 @@ def has_existing_timestamp(filename):
     return re.search(timestamp_pattern, filename) is not None
 
 # Prompt the user for the directory path where picture files are located
-source_directory = input("\nProvide the directory where your images are located:\n")
+source_directory = input("\n Provide the directory where your images are located:\n")
 
 # Check if the provided path is a valid directory
 if not os.path.isdir(source_directory):
-    print("\nInvalid directory path. Please provide a valid directory path.")
+    print("\n Invalid directory path. Please provide a valid directory path.")
     exit()
 
 # Count the number of image files in the source directory
@@ -32,10 +32,10 @@ image_files = [filename for filename in os.listdir(source_directory) if filename
 num_image_files = len(image_files)
 
 # Prompt for the increment based on the number of image files
-increment = int(input(f"\n {num_image_files} images in directory. \n\nEnter the increment (e.g., 1 for every file, 2 for every other file): \n"))
+increment = int(input(f"\n {num_image_files} images in directory. \n\n Enter the increment (e.g., 1 for every file, 2 for every other file): \n"))
 
 # Prompt the user for the output directory or press Enter to use the default
-output_directory = input("\nProvide the output directory path (or press Enter):\n")
+output_directory = input("\n Provide the output directory path (or press Enter):\n")
 
 # Create a subdirectory with the current timestamp (with space between day and hour)
 timestamp = datetime.now().strftime('%Y%m%d %H%M%S')
@@ -45,6 +45,7 @@ if not output_directory:
     subdirectory = os.path.join(source_directory, timestamp)
     if not os.path.exists(subdirectory):
         os.mkdir(subdirectory)
+        print(f" Copying files to: {subdirectory} \n")
 else:
     if not os.path.exists(output_directory):
         os.mkdir(output_directory)
@@ -93,6 +94,6 @@ for filename in os.listdir(source_directory):
             print(f"No EXIF data found for '{filename}'")
 
 if not output_directory:
-    print(f"\n{copied_files_count} files copied to: {subdirectory}")
+    print(f"\n {copied_files_count} files copied to: {subdirectory}")
 else:
-    print(f"\n{copied_files_count} files copied to: {output_directory}")
+    print(f"\n {copied_files_count} files copied to: {output_directory}")
