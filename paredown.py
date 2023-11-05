@@ -59,7 +59,7 @@ copied_files_count = 0
 
 # Iterate through the files in the directory
 for filename in os.listdir(source_directory):
-    if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+    if filename.lower().endswith(('.arw', '.dng', '.gif', '.jpg', '.jpeg', '.png', '.tif', '.tiff')):
         file_path = os.path.join(source_directory, filename)
 
         # Get the timestamp from EXIF data
