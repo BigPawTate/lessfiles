@@ -28,7 +28,7 @@ if not os.path.isdir(source_directory):
     exit()
 
 # Count the number of image files in the source directory
-image_files = [filename for filename in os.listdir(source_directory) if filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+image_files = [filename for filename in os.listdir(source_directory) if filename.lower().endswith(('.arw', '.dng', '.gif', '.jpg', '.jpeg', '.png', '.tif', '.tiff'))]
 num_image_files = len(image_files)
 
 # Prompt for the increment based on the number of image files
